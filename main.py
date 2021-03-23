@@ -5,6 +5,7 @@ import subs.SubGCContent as Mod2
 import subs.SubDNAtoProtein as Mod3
 import subs.SubImage as Mod4
 import subs.SubSequenceAlign as Mod5
+import subs.SubSignal as Mod6
 
 
 class OpeningApplication(ttk.Frame):
@@ -12,7 +13,25 @@ class OpeningApplication(ttk.Frame):
         ttk.Frame.__init__(self, parent, **kwargs)
         self.parent = parent
 
-        ttk.Label(self, text="lfjsldfjsdlfdfj\nsdfljdlsjfdfjd\nfdlkfjsflsdjfldf").grid(row=0, column=0)
+        ttk.Label(self, text="Module Info:"
+                             "\n"
+                             "Molecular Mass Estimator: This module takes a DNA, RNA, or amino acid Sequence,\n"
+                             "and estimate the mass.\n"
+                             "\n"
+                             "GC Content: This module takes a sequence, such as DNA, and generates a plot of\n"
+                             "the GC density within a region.\n"
+                             "\n"
+                             "DNA to Protein: This module takes a DNA sequence, and generates the amino acid\n"
+                             "sequence generate from it.\n"
+                             "\n"
+                             "Image: This module takes in a path to an image, and then allows grey-scaling,\n"
+                             "or alternating of the RGB values.\n"
+                             "\n"
+                             "Sequence Alignment: This module takes in two different sequences, of either DNA\n"
+                             "or amino acid, and then calculates the similarity.\n"
+                             "\n"
+                             "Signal: This module takes in various parameters within the input,\n"
+                             "and then generates a signal graph, and/or the fourier transform.").grid(row=0, column=0)
 
 
 class Application(ttk.Frame):
@@ -29,7 +48,8 @@ class Application(ttk.Frame):
         ttk.Label(self.modulePickFrame, text="Choose module").grid(row=0, column=0)
         module_choose = ttk.Combobox(self.modulePickFrame, width=20, textvariable=self.selectedModule, state="readonly")
         module_choose['values'] = ("Molecular Mass Estimator", "GC Content Plot",
-                                   "DNA Seq to Protein", "Image", "Sequence Alignment")
+                                   "DNA Seq to Protein", "Image", "Sequence Alignment",
+                                   "Signal")
         module_choose.grid(row=1, column=0)
         module_button = ttk.Button(self.modulePickFrame, text="Change Module", command=self.changeModule)
         module_button.grid(row=2, column=0)
@@ -39,19 +59,18 @@ class Application(ttk.Frame):
 
         if self.selectedModule.get() == "Molecular Mass Estimator":
             self.moduleFrame = Mod1.EstimateMolMassApp(self)
-            self.moduleFrame.grid(row=0, column=1)
         elif self.selectedModule.get() == "GC Content Plot":
             self.moduleFrame = Mod2.GCContentPlotApp(self)
-            self.moduleFrame.grid(row=0, column=1)
         elif self.selectedModule.get() == "DNA Seq to Protein":
             self.moduleFrame = Mod3.DNAtoProteinApp(self)
-            self.moduleFrame.grid(row=0, column=1)
         elif self.selectedModule.get() == "Image":
             self.moduleFrame = Mod4.ImageApp(self)
-            self.moduleFrame.grid(row=0, column=1)
         elif self.selectedModule.get() == "Sequence Alignment":
             self.moduleFrame = Mod5.SequenceAlignApp(self)
-            self.moduleFrame.grid(row=0, column=1)
+        elif self.selectedModule.get() == "Signal":
+            self.moduleFrame = Mod6.SignalApp(self)
+
+        self.moduleFrame.grid(row=0, column=1)
 
 
 root = tk.Tk()
