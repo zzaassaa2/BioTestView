@@ -13,7 +13,9 @@ class OpeningApplication(ttk.Frame):
         ttk.Frame.__init__(self, parent, **kwargs)
         self.parent = parent
 
-        ttk.Label(self, text="Module Info:"
+        ttk.Label(self, text="Note: The program only excepts standard DNA/RNA/Protein codes, no ambiguous."
+                             "\n\n"
+                             "Module Info:"
                              "\n"
                              "Molecular Mass Estimator: This module takes a DNA, RNA, or amino acid Sequence,\n"
                              "and estimate the mass.\n"

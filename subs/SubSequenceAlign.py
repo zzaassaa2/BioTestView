@@ -55,21 +55,25 @@ class SequenceAlignApp(ttk.Frame):
     def __init__(self, parent, **kwargs):
         ttk.Frame.__init__(self, parent, **kwargs)
 
-        self.entry1 = scrolledtext.ScrolledText(self, width=30, height=5)
+        self.leftFrame = ttk.Frame(self)
+        self.leftFrame.grid(row=0, column=0)
+        self.rightFrame = ttk.Frame(self)
+        self.rightFrame.grid(row=0, column=1)
+        self.entry1 = scrolledtext.ScrolledText(self.rightFrame, width=30, height=5)
         self.entry1.grid(row=0, column=0)
-        self.entry2 = scrolledtext.ScrolledText(self, width=30, height=5)
+        self.entry2 = scrolledtext.ScrolledText(self.rightFrame, width=30, height=5)
         self.entry2.grid(row=0, column=1)
 
         self.readVar = tk.IntVar()
-        ttk.Radiobutton(self, text="Protein", variable=self.readVar, value=1).grid(row=1, column=0)
-        ttk.Radiobutton(self, text="DNA", variable=self.readVar, value=0).grid(row=1, column=1)
-        self.label = ttk.Label(self)
-        self.label.grid(row=2, column=0)
+        ttk.Radiobutton(self.leftFrame, text="Protein", variable=self.readVar, value=1).grid(row=0, column=0)
+        ttk.Radiobutton(self.leftFrame, text="DNA", variable=self.readVar, value=0).grid(row=1, column=0)
+        self.label = ttk.Label(self.rightFrame)
+        self.label.grid(row=1, column=0)
 
-        ttk.Button(self, text="Calc Sequence Similarity",
-                   command=self.calcSequenceSimilarity).grid(row=3, column=0)
-        ttk.Button(self, text="Calc Sequence Alignment",
-                   command=self.calcSequenceAlignment).grid(row=3, column=1)
+        ttk.Button(self.rightFrame, text="Calc Sequence Similarity",
+                   command=self.calcSequenceSimilarity).grid(row=2, column=0)
+        ttk.Button(self.rightFrame, text="Calc Sequence Alignment",
+                   command=self.calcSequenceAlignment).grid(row=2, column=1)
 
     def calcSeqIdentity(self, seqA: str, seqB: str):
         numPlaces = min(len(seqA), len(seqB))

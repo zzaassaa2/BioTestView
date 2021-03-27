@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
+import Utils
 
 
 class DNAtoProteinApp(ttk.Frame):
@@ -18,8 +19,9 @@ class DNAtoProteinApp(ttk.Frame):
     def __init__(self, parent, **kwargs):
         ttk.Frame.__init__(self, parent, **kwargs)
 
-        self.output = tk.StringVar()
-        self.output.set("Enter Value Within Text Field")
+        self.output = scrolledtext.ScrolledText(self, width=50, height=10)
+        self.output.grid(row=3, column=0)
+        self.output.configure(state='disabled')
 
         self.text = scrolledtext.ScrolledText(self, width=30, height=5)
         self.text.grid(row=0, column=0)
@@ -27,12 +29,22 @@ class DNAtoProteinApp(ttk.Frame):
         buttonFrame = ttk.Frame(self)
         buttonFrame.grid(row=1, column=0, padx=5, pady=5)
         ttk.Button(buttonFrame, text="submit",
-                   command=lambda: self.output.set(self.proteinTranslation(self.text.get(1.0, 'end-1c')))).grid(row=0,
+                   command=lambda: self.setOutput(self.proteinTranslation(self.text.get(1.0, 'end-1c')))).grid(row=0,
                                                                                                                 column=0)
         ttk.Button(buttonFrame, text="default", command=lambda: self.setSrcData(DNAtoProteinApp.dnaSeq)).grid(row=0, column=1)
-        ttk.Label(self, textvariable=self.output).grid(row=2, column=0)
+
+        ttk.Label(self, text="Output:").grid(row=2, column=0)
+
+    def setOutput(self, toInsert: str):
+        self.output.configure(state='normal')
+        self.output.delete('1.0', tk.END)
+        self.output.insert(tk.INSERT, toInsert)
+        self.output.configure(state='disabled')
 
     def proteinTranslation(self, seq: str, geneticCode=STANDARD_GENETIC_CODE):
+        if not Utils.validate_dna(seq):
+            return "Invalid DNA sequence"
+
         # Convert to RNA sequence
         seq = seq.replace('T', 'U')
         proteinSeq = []

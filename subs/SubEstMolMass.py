@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
+import Utils
 
 
 class EstimateMolMassApp(ttk.Frame):
@@ -43,6 +44,19 @@ class EstimateMolMassApp(ttk.Frame):
                    command=lambda: self.setSrcData(EstimateMolMassApp.proteinSeq)).grid(row=2, column=0)
 
     def estimateMolMass(self, seq: str, molType='protein'):
+        if seq == "":
+            return "**Output**"
+
+        if molType == "protein":
+            if not Utils.validate_protein(seq):
+                return "Invalid Protein sequence"
+        elif molType == "DNA":
+            if not Utils.validate_dna(seq):
+                return "Invalid DNA sequence"
+        elif molType == "RNA":
+            if not Utils.validate_rna(seq):
+                return "Invalid RNA sequence"
+
         massDict = EstimateMolMassApp.residueMasses[molType]
         # Begin with mass of extra end atoms H + OH
         molMass = 18.02
